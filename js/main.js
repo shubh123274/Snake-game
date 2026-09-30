@@ -1,4 +1,5 @@
 import { Game } from './game.js';
+import { setupInput } from './input.js';
 
 const board = document.getElementById('game-board');
 
@@ -28,19 +29,8 @@ const createBoard = () => {
 
 const Render = () => {
 
-    const cells = board.children;
-    for (const cell of cells) {
-
-        cell.classList.remove(
-            "snake",
-            "head",
-            "food"
-        );
-
-    }
-
     // Remove old snake
-    Array.from(cells).forEach(cell => {
+    Array.from(board.children).forEach(cell => {
         cell.classList.remove('snake');
         cell.classList.remove('head');
     });
@@ -78,13 +68,19 @@ const startGame = () => {
         game.update();
 
         Render();
-        console.log("Render() & game Update() called")
 
-        if (!game.snake.running) {
+        if (!game.running) {
             clearInterval(interval);
         }
 
-    }, game.snake.speed);
+    }, game.speed);
+
+
+    setupInput(direction => {
+
+        game.setDirection(direction);
+
+    });
 };
 
 
